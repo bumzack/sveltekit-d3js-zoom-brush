@@ -1,6 +1,7 @@
-# A brushabe and zoomable chart in SvelteKit using D3js
+# A brushabe and zoomable multline chart in SvelteKit using D3js
 
 A brushable and zoomable multi line chart in SvelteKit & D3js
+
 
 ## Screenshot
 
@@ -25,7 +26,7 @@ Or you implement your own server.
 Requirements:
 - a single REST endpoint ```/GET``` path ```/api/chartdata```
 - returns the data provided in the file ```multline_chart.json```
-- port ```3000```
+- runs on port ```3000```
 
 #### Start either the NodeJS backend
 
