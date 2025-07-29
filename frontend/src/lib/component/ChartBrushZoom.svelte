@@ -141,11 +141,11 @@
 	bind:yScale={yScaleZoomed}
 	bind:lineGenerator={lineGeneratorZoomed}
 />
-<br />
-<br />
+
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12">
+			<h4>Full range of data</h4>
 			<div bind:clientWidth={width}>
 				{#if data && width && xScaleFull && yScaleFull && lineGeneratorFull}
 					<svg {width} {height}>

@@ -39,6 +39,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12">
+			<h4>Zoomed Data</h4>
 			<div bind:clientWidth={width}>
 				{#if data && width && xScale && yScale && lineGenerator}
 					<svg {width} {height}>

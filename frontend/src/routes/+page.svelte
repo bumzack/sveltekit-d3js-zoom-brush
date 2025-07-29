@@ -9,11 +9,14 @@
 </script>
 
 <div class="row">
-	<div class="col-lg-12">
-		<h2>Brushable & zoomable multi line chart</h2>
+	<div class="col-lg-12 demo">
+		<h1>Brushable & zoomable multi line chart</h1>
 		<ChartBrushZoom bind:data={multiLineChart} />
 	</div>
 </div>
 
 <style>
+	.demo {
+		margin-top: 50px;
+	}
 </style>
