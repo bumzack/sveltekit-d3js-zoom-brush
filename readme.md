@@ -5,11 +5,11 @@ a brushable and zoomable multi line chart in SvelteKit & D3js
 
 ## Screenshot
 
-[Screenshot](https://github.com/bumzack/sveltekit-d3js-zoom-brush/screenshot.png)
+![Screenshot.](screenshot.png)
 
 ## based on
 
-- I took some inspiration from the following stack overflow discussion: https://stackoverflow.com/questions/57956581/svelte-and-d3-brush
+- some inspiration from the following stack overflow discussion: https://stackoverflow.com/questions/57956581/svelte-and-d3-brush
 - The ```Axis``` components are taken from: https://datavisualizationwithsvelte.com/basics/svelte-5-d3-example
 
 ## installation
