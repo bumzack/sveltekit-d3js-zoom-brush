@@ -1,23 +1,20 @@
 <script lang="ts">
 	import { scaleLinear, scaleTime } from 'd3-scale';
 	import { curveBasis, line } from 'd3-shape';
-	import { draw } from 'svelte/transition';
 	import { brushX } from 'd3-brush';
 	import { select } from 'd3-selection';
-	import SimpleChart from './SimpleChart.svelte';
-	import AxisY from './AxisY.svelte';
-	import AxisX from './AxisX.svelte';
-	import type { ChartMargins, MultilineChart, PointData } from '$lib/models';
+	import type { ChartMargins, ChartParameter, MultilineChart, PointData } from '$lib/models';
 	import { deepCopy } from '$lib/utils';
+	import SimpleChart2 from './SimpleChart2.svelte';
 
-	let { data = $bindable() }: { data: MultilineChart } = $props();
+	let { data }: { data: MultilineChart } = $props();
 
-	let dataZoomed: MultilineChart = $state(deepCopy(data));
+	let dataZoomed: MultilineChart = $derived(deepCopy(data));
 
-	let width = $state(0);
+	let width = $state(300);
 	let height = $state(300);
 	let margin: ChartMargins = $state({ top: 10, right: 0, bottom: 20, left: 35 });
-	let brushElement = $state(null);
+	let brushElement: HTMLElement | undefined = $derived(undefined);
 
 	// zoomed chart xScale
 	let xScaleZoomed = $derived(
@@ -87,13 +84,16 @@
 	);
 
 	$effect(() => {
+		console.log(`effect() called`);
 		if (brushElement) {
+			console.log(`effect() called and brushElement !== undefined`);
 			select(brushElement).call(brush);
+		} else {
+			console.log(`effect() called and brushElement === undefined`);
 		}
 	});
 
 	function brushed(event: d3.D3BrushEvent<unknown>) {
-		console.log(`AAAAAAAAAAA    brushed called AAAAAAAAAAAAAAAAAAAAAA      `);
 		const selection = event.selection;
 		if (selection) {
 			if (xScaleFull && xScaleZoomed && dataZoomed) {
@@ -132,51 +132,35 @@
 			}
 		}
 	}
+
+	let zoomed = $state(false);
+
+	let chartParamterZoomed: ChartParameter = $derived({
+		full: zoomed,
+		height: height,
+		margin: margin,
+		xScale: xScaleZoomed,
+		yScale: yScaleZoomed,
+		lineGenerator: lineGeneratorZoomed
+	});
+
+	let full = $state(true);
+	let chartParamterFull: ChartParameter = $derived({
+		full: full,
+		height: height,
+		margin: margin,
+		xScale: xScaleFull,
+		yScale: yScaleFull,
+		lineGenerator: lineGeneratorFull
+	});
+
+	$effect(() => {
+		console.log(`CHarBrushZoom2: multiLineChart ${data}`);
+		console.log(`chartParamterZoomed ${JSON.stringify(chartParamterZoomed)}`);
+		console.log(`chartParamterFull ${JSON.stringify(chartParamterFull)}`);
+	});
 </script>
 
-<SimpleChart
-	bind:data={dataZoomed}
-	bind:height
-	bind:margin
-	bind:xScale={xScaleZoomed}
-	bind:yScale={yScaleZoomed}
-	bind:lineGenerator={lineGeneratorZoomed}
-/>
+<SimpleChart2 {width} data={dataZoomed} chartParameter={chartParamterZoomed} {brushElement} />
 
-<div class="container">
-	<div class="row">
-		<div class="col-lg-12">
-			<h4>Full range of data</h4>
-			<div bind:clientWidth={width}>
-				{#if data && width && xScaleFull && yScaleFull && lineGeneratorFull}
-					<svg {width} {height}>
-						<!-- this is the only reason, why the SimpleChart component can't be reused  -->
-						<!-- attempts at passing the "brushElement" as  a prop didn't work -->
-						<g bind:this={brushElement} {width} {height} />
-						<AxisX
-							{width}
-							{height}
-							{margin}
-							ticksNumber={width > 380 ? 10 : 4}
-							xScale={xScaleFull}
-							format={(d: Date) =>
-								`${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`}
-						/>
-						<AxisY {margin} yScale={yScaleFull} />
-
-						// eslint-disable-next-line svelte/require-each-key
-						{#each data.lineData as lineData}
-							<path
-								in:draw={{ duration: 1000 }}
-								d={lineGeneratorFull(lineData.points)}
-								stroke={lineData.color}
-								stroke-width={1.5}
-								fill="none"
-							/>
-						{/each}
-					</svg>
-				{/if}
-			</div>
-		</div>
-	</div>
-</div>
+<SimpleChart2 {width} {data} chartParameter={chartParamterFull} {brushElement} />

@@ -33,3 +33,12 @@ export interface ToolTipData {
 	x: number;
 	y: number;
 }
+
+export interface ChartParameter {
+	full: boolean;
+	height: number;
+	margin: ChartMargins;
+	xScale: any;
+	yScale: any;
+	lineGenerator: any;
+}

@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { draw } from 'svelte/transition';
 	import { formatDate } from '$lib/utils';
-	import type {
-		ChartMarginsGeneric,
-		MultilineChart,
-		ToolTipDataGeneric
-	} from '$lib/models_generic';
+	import type { ChartMargins, MultilineChart, ToolTipData } from '$lib/models';
 	import AxisX from './AxisX.svelte';
 	import AxisY from './AxisY.svelte';
 
@@ -22,12 +18,12 @@
 		yScale: any;
 		lineGenerator: any;
 		height: number;
-		margin: ChartMarginsGeneric;
+		margin: ChartMargins;
 	} = $props();
 
 	let width = $state(0); // width will be set by the clientWidth
 
-	let toolTip: ToolTipDataGeneric = $derived({
+	let toolTip: ToolTipData = $derived({
 		txt: '',
 		x: 0,
 		y: 0
