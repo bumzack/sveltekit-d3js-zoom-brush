@@ -6,8 +6,8 @@
 
 	// Conditionally apply the formatter if provided
 	const formatter = format
-		? (tick) => format(tick) // Use the provided formatter
-		: (tick) => tick; // Default: no formatting
+		? (tick: number) => format(tick) // Use the provided formatter
+		: (tick: number) => tick; // Default: no formatting
 </script>
 
 {#if xScale}
@@ -16,14 +16,12 @@
 		<line stroke="currentColor" x1={margin.left} x2={width - margin.right} />
 
 		<!-- Ticks -->
-		// eslint-disable-next-line svelte/require-each-key
-		{#each xScale.ticks(ticksNumber) as tick}
+		{#each xScale.ticks(ticksNumber) as tick, i (i)}
 			<line stroke="currentColor" x1={xScale(tick)} x2={xScale(tick)} y1={0} y2={6} />
 		{/each}
 
 		<!-- Tick labels -->
-		// eslint-disable-next-line svelte/require-each-key
-		{#each xScale.ticks(ticksNumber) as tick}
+		{#each xScale.ticks(ticksNumber) as tick, i (i)}
 			<text font-size="12px" fill="currentColor" text-anchor="middle" x={xScale(tick)} y={16}>
 				{formatter(tick)}
 			</text>

@@ -33,7 +33,6 @@
 				{#if data && chartParameter && width && chartParameter.xScale && chartParameter.yScale && chartParameter.lineGenerator}
 					<svg {width} height={chartParameter.height} id="svgid-{chartParameter.full}">
 						{#if brushElement !== null}
-							{console.log(`width ${width} height ${chartParameter.height}`)}
 							<g
 								bind:this={brushElement}
 								{width}
@@ -67,9 +66,7 @@
 							<circle cx={+toolTip.x} cy={+toolTip.y} r="3" fill="red" />
 						{/if}
 
-						// eslint-disable-next-line svelte/require-each-key
 						{#each data.lineData as lineData, i (i)}
-							<!-- the line -->
 							<path
 								in:draw={{ duration: 1000 }}
 								d={chartParameter.lineGenerator(lineData.points as PointData[])}

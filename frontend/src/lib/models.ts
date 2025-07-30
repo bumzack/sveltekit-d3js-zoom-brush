@@ -14,7 +14,6 @@ export interface LineData {
 	points: PointData[];
 	legend: string;
 	color: string;
-	id: number;
 }
 
 export interface MultilineChart {

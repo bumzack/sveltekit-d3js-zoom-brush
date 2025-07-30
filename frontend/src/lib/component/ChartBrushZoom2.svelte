@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { scaleLinear, scaleTime } from 'd3-scale';
-	import { curveBasis, line } from 'd3-shape';
-	import { brushX } from 'd3-brush';
-	import { select } from 'd3-selection';
 	import type { ChartMargins, ChartParameter, MultilineChart, PointData } from '$lib/models';
 	import { deepCopy } from '$lib/utils';
+	import { brushX, type BrushSelection } from 'd3-brush';
+	import { scaleLinear, scaleTime, type ScaleTime } from 'd3-scale';
+	import { select } from 'd3-selection';
+	import { curveBasis, line, type Line } from 'd3-shape';
 	import SimpleChart2 from './SimpleChart2.svelte';
 
 	let { data }: { data: MultilineChart } = $props();
@@ -18,7 +18,7 @@
 	let brushElement: SVGGElement | null = $state(null);
 
 	// zoomed chart xScale
-	let xScaleZoomed = $derived(
+	let xScaleZoomed = $derived<ScaleTime<number, number> | null>(
 		data && width
 			? scaleTime<number, number>()
 					.domain([dataZoomed.minX, dataZoomed.maxX])
@@ -46,7 +46,7 @@
 	);
 
 	// full chart xScale
-	let xScaleFull = $derived(
+	let xScaleFull = $derived<ScaleTime<number, number> | null>(
 		data && width
 			? scaleTime<number, number>()
 					.domain([data.minX, data.maxX])
@@ -64,7 +64,7 @@
 	);
 
 	// full chart lineGenerator
-	let lineGeneratorFull = $derived(
+	let lineGeneratorFull = $derived<Line<PointData> | null>(
 		xScaleFull && yScaleFull
 			? line<PointData>()
 					.x((d: PointData) => xScaleFull(d.x))
@@ -91,10 +91,10 @@
 	});
 
 	function brushed(event: d3.D3BrushEvent<SVGGElement>) {
-		const selection = event.selection;
+		const selection: BrushSelection | null = event.selection;
 		if (selection) {
 			if (xScaleFull && xScaleZoomed && dataZoomed) {
-				const [x0, x1] = selection.map((x) => xScaleFull.invert(x));
+				const [x0, x1]: Date[] = selection.map((x) => xScaleFull.invert(x) as Date);
 				xScaleZoomed.domain([x0, x1]);
 				const tmp = deepCopy(data);
 				let min: number = 100000000;

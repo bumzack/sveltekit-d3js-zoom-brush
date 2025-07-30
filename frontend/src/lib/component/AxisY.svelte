@@ -9,8 +9,7 @@
 		<line stroke="currentColor" y1={yScale(yScale.domain()[0])} y2={yScale(yScale.domain()[1])} />
 
 		<!-- Specify the number of ticks here -->
-		// eslint-disable-next-line svelte/require-each-key
-		{#each yScale.ticks(ticksNumber) as tick}
+		{#each yScale.ticks(ticksNumber) as tick, i (i)}
 			{#if tick !== 0}
 				<line stroke="currentColor" x1={0} x2={-6} y1={yScale(tick)} y2={yScale(tick)} />
 			{/if}
