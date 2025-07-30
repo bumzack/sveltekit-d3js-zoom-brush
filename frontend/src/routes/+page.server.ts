@@ -14,7 +14,6 @@ export const load: PageServerLoad = async () => {
 	multiLineChart.minX = new Date(multiLineChart.minX);
 	multiLineChart.maxX = new Date(multiLineChart.maxX);
 
-	// console.log(`multiLineChart ${JSON.stringify(multiLineChart)}`);
 	return {
 		multiLineChart: multiLineChart
 	};

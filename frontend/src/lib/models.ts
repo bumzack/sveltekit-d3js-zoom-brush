@@ -1,5 +1,8 @@
+import type { ScaleLinear, ScaleTime } from 'd3-scale';
+import type { Line } from 'd3-shape';
+
 export interface MultilineChartRequest {
-	ids: Array<number>;
+	ids: number[];
 }
 
 export interface PointData {
@@ -8,9 +11,10 @@ export interface PointData {
 }
 
 export interface LineData {
-	points: Array<PointData>;
+	points: PointData[];
 	legend: string;
 	color: string;
+	id: number;
 }
 
 export interface MultilineChart {
@@ -18,7 +22,7 @@ export interface MultilineChart {
 	maxX: Date;
 	minY: number;
 	maxY: number;
-	lineData: Array<LineData>;
+	lineData: LineData[];
 }
 
 export interface ChartMargins {
@@ -38,7 +42,7 @@ export interface ChartParameter {
 	full: boolean;
 	height: number;
 	margin: ChartMargins;
-	xScale: any;
-	yScale: any;
-	lineGenerator: any;
+	xScale: ScaleTime<number, number> | null;
+	yScale: ScaleLinear<number, number> | null;
+	lineGenerator: Line<PointData> | null;
 }

@@ -14,12 +14,13 @@
 	let width = $state(300);
 	let height = $state(300);
 	let margin: ChartMargins = $state({ top: 10, right: 0, bottom: 20, left: 35 });
-	let brushElement: HTMLElement | undefined = $derived(undefined);
+	// let brushElement: HTMLElement | undefined = $derived(undefined);
+	let brushElement: SVGGElement | null = $state(null);
 
 	// zoomed chart xScale
 	let xScaleZoomed = $derived(
 		data && width
-			? scaleTime()
+			? scaleTime<number, number>()
 					.domain([dataZoomed.minX, dataZoomed.maxX])
 					.range([margin.left, width - margin.right])
 			: null
@@ -37,7 +38,7 @@
 	// zoomed chart lineGenerator
 	let lineGeneratorZoomed = $derived(
 		xScaleZoomed && yScaleZoomed
-			? line()
+			? line<PointData>()
 					.x((d: PointData) => xScaleZoomed(d.x))
 					.y((d: PointData) => yScaleZoomed(+d.y))
 					.curve(curveBasis)
@@ -47,7 +48,7 @@
 	// full chart xScale
 	let xScaleFull = $derived(
 		data && width
-			? scaleTime()
+			? scaleTime<number, number>()
 					.domain([data.minX, data.maxX])
 					.range([margin.left, width - margin.right])
 			: null
@@ -56,7 +57,7 @@
 	// full chart yScale
 	let yScaleFull = $derived(
 		data && width
-			? scaleLinear()
+			? scaleLinear<number, number>()
 					.domain([data.minY, data.maxY])
 					.range([height - margin.bottom, margin.top])
 			: null
@@ -65,7 +66,7 @@
 	// full chart lineGenerator
 	let lineGeneratorFull = $derived(
 		xScaleFull && yScaleFull
-			? line()
+			? line<PointData>()
 					.x((d: PointData) => xScaleFull(d.x))
 					.y((d: PointData) => yScaleFull(+d.y))
 					.curve(curveBasis)
@@ -84,16 +85,12 @@
 	);
 
 	$effect(() => {
-		console.log(`effect() called`);
 		if (brushElement) {
-			console.log(`effect() called and brushElement !== undefined`);
-			select(brushElement).call(brush);
-		} else {
-			console.log(`effect() called and brushElement === undefined`);
+			select<SVGGElement, unknown>(brushElement).call(brush);
 		}
 	});
 
-	function brushed(event: d3.D3BrushEvent<unknown>) {
+	function brushed(event: d3.D3BrushEvent<SVGGElement>) {
 		const selection = event.selection;
 		if (selection) {
 			if (xScaleFull && xScaleZoomed && dataZoomed) {
@@ -123,12 +120,8 @@
 
 				dataZoomed.minX = x0;
 				dataZoomed.maxX = x1;
-
-				// if you don't want to change the y scale/extent on the zoomed chart, then
-				// remove these 2 lines - then the "full" and "zoomed" chart will always have
-				// the same y-axis scale/extent
 				dataZoomed.minY = min;
-				dataZoomed.maxY = max;
+				dataZoomed.maxY = max * 1.1;
 			}
 		}
 	}
@@ -153,14 +146,8 @@
 		yScale: yScaleFull,
 		lineGenerator: lineGeneratorFull
 	});
-
-	$effect(() => {
-		console.log(`CHarBrushZoom2: multiLineChart ${data}`);
-		console.log(`chartParamterZoomed ${JSON.stringify(chartParamterZoomed)}`);
-		console.log(`chartParamterFull ${JSON.stringify(chartParamterFull)}`);
-	});
 </script>
 
-<SimpleChart2 {width} data={dataZoomed} chartParameter={chartParamterZoomed} {brushElement} />
+<SimpleChart2 {width} data={dataZoomed} chartParameter={chartParamterZoomed} brushElement={null} />
 
 <SimpleChart2 {width} {data} chartParameter={chartParamterFull} {brushElement} />

@@ -17,4 +17,4 @@ router.get("/api/chartdata", (ctx, next) => {
 
 app.use(router.routes());
 
-app.listen(3000);
+app.listen(4000);

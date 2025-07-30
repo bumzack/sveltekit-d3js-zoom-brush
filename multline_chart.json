@@ -1576,7 +1576,8 @@
         }
       ],
       "legend": "NVIDIA",
-      "color": "#000000"
+      "color": "#000000",
+      "id": 1
     },
     {
       "points": [
@@ -3150,7 +3151,8 @@
         }
       ],
       "legend": "Microsoft",
-      "color": "#FF0000"
+      "color": "#FF0000",
+      "id": 2
     },
     {
       "points": [
@@ -4724,7 +4726,8 @@
         }
       ],
       "legend": "Apple",
-      "color": "#0000FF"
+      "color": "#0000FF",
+      "id": 3
     }
   ]
 }

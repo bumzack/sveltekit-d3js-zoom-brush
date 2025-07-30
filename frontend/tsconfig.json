@@ -1,8 +1,10 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"allowJs": true,
-		"checkJs": true,
+		"types": ["d3"],
+		"lib": ["es2021", "dom"],
+		"module": "esnext",
+		"allowJs": false,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,

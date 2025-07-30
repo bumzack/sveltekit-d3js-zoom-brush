@@ -26,7 +26,7 @@ Or you implement your own server.
 Requirements:
 - a single REST endpoint ```/GET``` path ```/api/chartdata```
 - returns the data provided in the file ```multline_chart.json```
-- runs on port ```3000```
+- runs on port ```4000```
 
 #### Start either the NodeJS backend
 

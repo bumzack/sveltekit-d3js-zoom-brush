@@ -2,7 +2,7 @@ import type { MultilineChart } from './models';
 
 export const load_chart_data = async (): Promise<MultilineChart> => {
 	try {
-		const url = `http://localhost:3000/api/chartdata`;
+		const url = `http://localhost:4000/api/chartdata`;
 		console.log(`url ${url}`);
 		const response = await fetch(url, {
 			headers: {

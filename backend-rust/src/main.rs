@@ -17,7 +17,7 @@ async fn main() {
     let app = routes.layer(CorsLayer::permissive());
 
     // run it with hyper
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 4000));
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
 
     axum::serve(listener, app)
@@ -36,6 +36,7 @@ pub struct LineData {
     pub points: Vec<PointData>,
     pub legend: String,
     pub color: String,
+    pub id: i32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
